@@ -4,8 +4,8 @@ const SCRAMBLE: &str = "L2 D2 R U2 F2 L U2 L D2 R2 F2 R' D F D R D L' B L'";
 
 fn main() {
     let mut cube = Cube::default();
-    println!("{cube}");
+    println!("Initial position:\n{cube}");
 
     cube.scramble(SCRAMBLE);
-    println!("{cube}");
+    println!("Scramble: {SCRAMBLE}\n{cube}");
 }
