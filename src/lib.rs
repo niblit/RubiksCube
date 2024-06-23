@@ -79,7 +79,41 @@ impl Default for Cube {
 }
 
 impl Cube {
-    pub fn rotate_face_clockwise(&mut self, face: usize) {
+    pub fn scramble(&mut self, scramble: &str) {
+        let moves: Vec<&str> = scramble.split(' ').collect();
+
+        for r#move in moves {
+            match r#move {
+                "U" => self.up(),
+                "U'" => self.up_prime(),
+                "U2" => self.up_2(),
+
+                "D" => self.down(),
+                "D'" => self.down_prime(),
+                "D2" => self.down_2(),
+
+                "R" => self.right(),
+                "R'" => self.right_prime(),
+                "R2" => self.right_2(),
+
+                "L" => self.left(),
+                "L'" => self.left_prime(),
+                "L2" => self.left_2(),
+
+                "F" => self.front(),
+                "F'" => self.front_prime(),
+                "F2" => self.front_2(),
+
+                "B" => self.back(),
+                "B'" => self.back_prime(),
+                "B2" => self.back_2(),
+
+                _ => {panic!("Invalid move");}
+            }
+        }
+    }
+
+    fn rotate_face_clockwise(&mut self, face: usize) {
         let previous = self.pieces;
 
         self.pieces[face][0][0] = previous[face][2][0];
@@ -96,7 +130,6 @@ impl Cube {
     pub fn up(&mut self) {
         let previous = self.pieces;
 
-        // Up face
         self.rotate_face_clockwise(0);
 
         // Left face
@@ -126,24 +159,24 @@ impl Cube {
         self.rotate_face_clockwise(5);
 
         // Left face
-        self.pieces[1][2][0] = previous[2][2][0];
-        self.pieces[1][2][1] = previous[2][2][1];
-        self.pieces[1][2][2] = previous[2][2][2];
+        self.pieces[1][2][0] = previous[4][2][0];
+        self.pieces[1][2][1] = previous[4][2][1];
+        self.pieces[1][2][2] = previous[4][2][2];
 
         // Front face
-        self.pieces[2][2][0] = previous[3][2][0];
-        self.pieces[2][2][1] = previous[3][2][1];
-        self.pieces[2][2][2] = previous[3][2][2];
+        self.pieces[2][2][0] = previous[1][2][0];
+        self.pieces[2][2][1] = previous[1][2][1];
+        self.pieces[2][2][2] = previous[1][2][2];
 
         // Right face
-        self.pieces[3][2][0] = previous[4][2][0];
-        self.pieces[3][2][1] = previous[4][2][1];
-        self.pieces[3][2][2] = previous[4][2][2];
+        self.pieces[3][2][0] = previous[2][2][0];
+        self.pieces[3][2][1] = previous[2][2][1];
+        self.pieces[3][2][2] = previous[2][2][2];
 
         // Back face
-        self.pieces[4][2][0] = previous[1][2][0];
-        self.pieces[4][2][1] = previous[1][2][1];
-        self.pieces[4][2][2] = previous[1][2][2];
+        self.pieces[4][2][0] = previous[3][2][0];
+        self.pieces[4][2][1] = previous[3][2][1];
+        self.pieces[4][2][2] = previous[3][2][2];
     }
     pub fn right(&mut self) {
         let previous = self.pieces;
@@ -162,14 +195,14 @@ impl Cube {
         self.pieces[2][2][2] = previous[5][2][2];
 
         // Back face
-        self.pieces[4][0][2] = previous[0][0][2];
-        self.pieces[4][1][2] = previous[0][1][2];
-        self.pieces[4][2][2] = previous[0][2][2];
+        self.pieces[4][0][0] = previous[0][2][2];
+        self.pieces[4][1][0] = previous[0][1][2];
+        self.pieces[4][2][0] = previous[0][0][2];
 
         // Down face
-        self.pieces[5][0][2] = previous[4][0][2];
-        self.pieces[5][1][2] = previous[4][1][2];
-        self.pieces[5][2][2] = previous[4][2][2];
+        self.pieces[5][0][2] = previous[4][2][0];
+        self.pieces[5][1][2] = previous[4][1][0];
+        self.pieces[5][2][2] = previous[4][0][0];
     }
     pub fn left(&mut self) {
         let previous = self.pieces;
@@ -178,9 +211,9 @@ impl Cube {
         self.rotate_face_clockwise(1);
 
         // Up face
-        self.pieces[0][0][0] = previous[4][0][0];
-        self.pieces[0][1][0] = previous[4][1][0];
-        self.pieces[0][2][0] = previous[4][2][0];
+        self.pieces[0][0][0] = previous[4][2][2];
+        self.pieces[0][1][0] = previous[4][1][2];
+        self.pieces[0][2][0] = previous[4][0][2];
 
         // Front face
         self.pieces[2][0][0] = previous[0][0][0];
@@ -188,9 +221,9 @@ impl Cube {
         self.pieces[2][2][0] = previous[0][2][0];
 
         // Back face
-        self.pieces[4][0][0] = previous[5][0][0];
-        self.pieces[4][1][0] = previous[5][1][0];
-        self.pieces[4][2][0] = previous[5][2][0];
+        self.pieces[4][0][2] = previous[5][2][0];
+        self.pieces[4][1][2] = previous[5][1][0];
+        self.pieces[4][2][2] = previous[5][0][0];
 
         // Down face
         self.pieces[5][0][0] = previous[2][0][0];
@@ -204,9 +237,9 @@ impl Cube {
         self.rotate_face_clockwise(2);
 
         // Up face
-        self.pieces[0][2][0] = previous[1][0][2];
+        self.pieces[0][2][0] = previous[1][2][2];
         self.pieces[0][2][1] = previous[1][1][2];
-        self.pieces[0][2][2] = previous[1][2][2];
+        self.pieces[0][2][2] = previous[1][0][2];
 
         // Left face
         self.pieces[1][0][2] = previous[5][0][0];
@@ -219,9 +252,9 @@ impl Cube {
         self.pieces[3][2][0] = previous[0][2][2];
 
         // Down face
-        self.pieces[5][0][0] = previous[3][0][0];
-        self.pieces[5][0][1] = previous[3][0][1];
-        self.pieces[5][0][2] = previous[3][0][2];
+        self.pieces[5][0][0] = previous[3][2][0];
+        self.pieces[5][0][1] = previous[3][1][0];
+        self.pieces[5][0][2] = previous[3][0][0];
     }
     pub fn back(&mut self) {
         let previous = self.pieces;
@@ -235,14 +268,14 @@ impl Cube {
         self.pieces[0][0][2] = previous[3][2][2];
 
         // Left face
-        self.pieces[1][0][0] = previous[0][0][0];
+        self.pieces[1][0][0] = previous[0][0][2];
         self.pieces[1][1][0] = previous[0][0][1];
-        self.pieces[1][2][0] = previous[0][0][2];
+        self.pieces[1][2][0] = previous[0][0][0];
 
         // Right face
-        self.pieces[3][0][2] = previous[5][2][0];
+        self.pieces[3][0][2] = previous[5][2][2];
         self.pieces[3][1][2] = previous[5][2][1];
-        self.pieces[3][2][2] = previous[5][2][2];
+        self.pieces[3][2][2] = previous[5][2][0];
 
         // Down face
         self.pieces[5][2][0] = previous[1][0][0];
