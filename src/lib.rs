@@ -1,12 +1,12 @@
-mod colors;
 mod cube;
+mod facets;
 mod initial_position;
 mod moves;
 mod solver;
 
-use colors::Color;
+pub type CubeType = [[[facets::Facet; 3]; 3]; 6];
 
-pub use cube::Cube;
-pub use solver::solve;
-
-pub type CubeType = [[[Color; 3]; 3]; 6];
+pub mod prelude {
+    pub use crate::cube::Cube;
+    pub use crate::solver::solve;
+}

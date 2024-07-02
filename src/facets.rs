@@ -1,5 +1,5 @@
 #[derive(Clone, Copy, PartialEq, Eq, Hash)]
-pub enum Color {
+pub enum Facet {
     White,
     Orange,
     Green,

@@ -19,7 +19,7 @@ pub enum Moves {
     Front2,
     Back,
     BackPrime,
-    Back2
+    Back2,
 }
 
 impl fmt::Display for Moves {
@@ -44,7 +44,6 @@ impl fmt::Display for Moves {
             Moves::BackPrime => "B'",
             Moves::Back2 => "B2",
         };
-
 
         write!(f, "{}", notation)
     }

@@ -1,11 +1,10 @@
-use super::colors::Color;
-use super::CubeType;
+use crate::{facets::Facet, CubeType};
 
 pub const INITIAL_POSITION: CubeType = [
-    [[Color::White; 3]; 3],
-    [[Color::Orange; 3]; 3],
-    [[Color::Green; 3]; 3],
-    [[Color::Red; 3]; 3],
-    [[Color::Blue; 3]; 3],
-    [[Color::Yellow; 3]; 3],
+    [[Facet::White; 3]; 3],
+    [[Facet::Orange; 3]; 3],
+    [[Facet::Green; 3]; 3],
+    [[Facet::Red; 3]; 3],
+    [[Facet::Blue; 3]; 3],
+    [[Facet::Yellow; 3]; 3],
 ];

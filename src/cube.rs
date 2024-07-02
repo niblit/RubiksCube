@@ -1,7 +1,6 @@
-use super::initial_position::INITIAL_POSITION;
-use super::{Color, CubeType};
-use super::moves::Moves;
 use std::fmt;
+
+use crate::{facets::Facet, initial_position::INITIAL_POSITION, moves::Moves, CubeType};
 
 use colored::{ColoredString, Colorize};
 
@@ -16,25 +15,26 @@ impl fmt::Display for Cube {
         fn piece_to_square(cube: &Cube, face: usize, row: usize, col: usize) -> ColoredString {
             let color = cube.pieces[face][row][col];
             match color {
-                Color::White => {
+                Facet::White => {
                     if row == 1 && col == 1 { " ▪ " } else { " W " }.on_truecolor(255, 255, 255)
                 }
-                Color::Orange => {
+                Facet::Orange => {
                     if row == 1 && col == 1 { " ▪ " } else { " O " }.on_truecolor(255, 165, 0)
                 }
-                Color::Green => {
+                Facet::Green => {
                     if row == 1 && col == 1 { " ▪ " } else { " G " }.on_truecolor(0, 255, 0)
                 }
-                Color::Red => {
+                Facet::Red => {
                     if row == 1 && col == 1 { " ▪ " } else { " R " }.on_truecolor(255, 0, 0)
                 }
-                Color::Blue => {
+                Facet::Blue => {
                     if row == 1 && col == 1 { " ▪ " } else { " B " }.on_truecolor(0, 0, 255)
                 }
-                Color::Yellow => {
+                Facet::Yellow => {
                     if row == 1 && col == 1 { " ▪ " } else { " Y " }.on_truecolor(255, 255, 0)
                 }
-            }.truecolor(0, 0, 0)
+            }
+            .truecolor(0, 0, 0)
         }
 
         let mut top_face = String::new();
@@ -72,7 +72,7 @@ impl Default for Cube {
     fn default() -> Self {
         Self {
             pieces: INITIAL_POSITION,
-            moves: Vec::new()
+            moves: Vec::new(),
         }
     }
 }
@@ -86,7 +86,14 @@ impl Cube {
     }
 
     pub fn print_moves(&self) {
-        println!("{}", self.moves.iter().map(|item| {item.to_string()}).collect::<Vec<String>>().join(" "));
+        println!(
+            "{}",
+            self.moves
+                .iter()
+                .map(|item| { item.to_string() })
+                .collect::<Vec<String>>()
+                .join(" ")
+        );
     }
 
     pub fn scramble(&mut self, scramble: &str) {
