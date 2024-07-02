@@ -1,6 +1,7 @@
 mod colors;
 mod cube;
 mod initial_position;
+mod moves;
 
 use colors::Color;
 

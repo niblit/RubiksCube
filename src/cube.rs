@@ -1,10 +1,12 @@
 use super::initial_position::INITIAL_POSITION;
 use super::{Color, CubeType};
+use super::moves::Moves;
 use std::fmt;
 
 use colored::{ColoredString, Colorize};
 pub struct Cube {
     pieces: CubeType,
+    moves: Vec<Moves>,
 }
 
 impl fmt::Display for Cube {
@@ -68,11 +70,20 @@ impl Default for Cube {
     fn default() -> Self {
         Self {
             pieces: INITIAL_POSITION,
+            moves: Vec::new()
         }
     }
 }
 
 impl Cube {
+    pub fn clear_past_moves(&mut self) {
+        self.moves.clear();
+    }
+
+    pub fn print_moves(&self) {
+        println!("{}", self.moves.iter().map(|item| {item.to_string()}).collect::<Vec<String>>().join(" "));
+    }
+
     pub fn scramble(&mut self, scramble: &str) {
         let moves: Vec<&str> = scramble.split(' ').collect();
 
@@ -124,6 +135,7 @@ impl Cube {
     }
 
     pub fn up(&mut self) {
+        self.moves.push(Moves::Up);
         let previous = self.pieces;
 
         self.rotate_face_clockwise(0);
@@ -149,6 +161,7 @@ impl Cube {
         self.pieces[4][0][2] = previous[1][0][2];
     }
     pub fn down(&mut self) {
+        self.moves.push(Moves::Down);
         let previous = self.pieces;
 
         // Down face
@@ -175,6 +188,7 @@ impl Cube {
         self.pieces[4][2][2] = previous[3][2][2];
     }
     pub fn right(&mut self) {
+        self.moves.push(Moves::Right);
         let previous = self.pieces;
 
         // Right face
@@ -201,6 +215,7 @@ impl Cube {
         self.pieces[5][2][2] = previous[4][0][0];
     }
     pub fn left(&mut self) {
+        self.moves.push(Moves::Left);
         let previous = self.pieces;
 
         // Right face
@@ -227,6 +242,7 @@ impl Cube {
         self.pieces[5][2][0] = previous[2][2][0];
     }
     pub fn front(&mut self) {
+        self.moves.push(Moves::Front);
         let previous = self.pieces;
 
         // Front face
@@ -253,6 +269,7 @@ impl Cube {
         self.pieces[5][0][2] = previous[3][0][0];
     }
     pub fn back(&mut self) {
+        self.moves.push(Moves::Back);
         let previous = self.pieces;
 
         // Back face

@@ -8,4 +8,8 @@ fn main() {
 
     cube.scramble(SCRAMBLE);
     println!("Scramble: {SCRAMBLE}\n{cube}");
+
+    cube.print_moves();
+    cube.clear_past_moves();
+    cube.print_moves();
 }
