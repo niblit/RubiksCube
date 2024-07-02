@@ -1,3 +1,4 @@
+use std::collections::HashSet;
 use std::collections::VecDeque;
 
 use super::Color;
@@ -8,9 +9,13 @@ pub fn solve(cube: &Cube) -> Cube {
     let mut queue = VecDeque::new();
     queue.push_back(cube.clone());
 
+    let mut visited = HashSet::new();
+
+
     let mut current;
     loop {
         current = queue.pop_front().unwrap();
+        visited.insert(current.get_pieces());
 
         if is_cross_solved(&current) {
             break;
@@ -18,7 +23,9 @@ pub fn solve(cube: &Cube) -> Cube {
             for direction in ["R", "R'", "R2", "L", "L'", "L2", "U", "U'", "U2", "D", "D'", "D2", "F", "F'", "F2", "B", "B'", "B2"] {
                 let mut new_cube = current.clone();
                 new_cube.scramble(direction);
-                queue.push_back(new_cube);
+                if !visited.contains(&new_cube.get_pieces()) {
+                    queue.push_back(new_cube);
+                }
             }
         }
 
