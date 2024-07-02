@@ -30,7 +30,7 @@ impl fmt::Display for Cube {
                 Color::Yellow => {
                     if row == 1 && col == 1 { " ▪ " } else { " Y " }.on_truecolor(255, 255, 0)
                 }
-            }
+            }.truecolor(0, 0, 0)
         }
 
         let mut top_face = String::new();
