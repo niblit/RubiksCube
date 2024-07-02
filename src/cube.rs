@@ -4,6 +4,8 @@ use super::moves::Moves;
 use std::fmt;
 
 use colored::{ColoredString, Colorize};
+
+#[derive(Clone)]
 pub struct Cube {
     pieces: CubeType,
     moves: Vec<Moves>,
@@ -76,6 +78,9 @@ impl Default for Cube {
 }
 
 impl Cube {
+    pub fn get_pieces(&self) -> CubeType {
+        self.pieces
+    }
     pub fn clear_past_moves(&mut self) {
         self.moves.clear();
     }
