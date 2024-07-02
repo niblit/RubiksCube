@@ -18,13 +18,12 @@ fn main() {
     }
 
     println!("Scramble: {}\n{}", cube.moves_as_string(), cube);
-    cube.clear_past_moves();
 
     println!("Searching white cross...");
-    let solved_cube = solve(&cube);
-    println!(
-        "Found solution:{}\n{}",
-        solved_cube.moves_as_string(),
-        solved_cube
-    );
+    let solution = solve(&cube);
+    cube.clear_past_moves();
+    for to_move in solution {
+        cube.make_move(to_move);
+    }
+    println!("Found solution:{}\n{}", cube.moves_as_string(), cube);
 }

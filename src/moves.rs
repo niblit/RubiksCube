@@ -75,6 +75,29 @@ impl Moves {
             Moves::Back2 => Moves::Back2,
         }
     }
+
+    pub const fn iterate() -> &'static [Moves; 18] {
+        &[
+            Moves::Up,
+            Moves::UpPrime,
+            Moves::Up2,
+            Moves::Down,
+            Moves::DownPrime,
+            Moves::Down2,
+            Moves::Right,
+            Moves::RightPrime,
+            Moves::Right2,
+            Moves::Left,
+            Moves::LeftPrime,
+            Moves::Left2,
+            Moves::Front,
+            Moves::FrontPrime,
+            Moves::Front2,
+            Moves::Back,
+            Moves::BackPrime,
+            Moves::Back2,
+        ]
+    }
 }
 
 impl fmt::Display for Moves {

@@ -82,6 +82,10 @@ impl Cube {
         self.pieces
     }
 
+    pub fn get_moves(&self) -> Vec<Moves> {
+        self.moves.clone()
+    }
+
     pub fn clear_past_moves(&mut self) {
         self.moves.clear();
     }
@@ -147,6 +151,7 @@ impl Cube {
     pub fn undo_move(&mut self) {
         if let Some(last_move) = self.moves.pop() {
             self.make_move(last_move.opposite());
+            self.moves.pop(); // remove the undo move
         }
     }
 
