@@ -81,54 +81,72 @@ impl Cube {
     pub fn get_pieces(&self) -> CubeType {
         self.pieces
     }
+
     pub fn clear_past_moves(&mut self) {
         self.moves.clear();
     }
 
-    pub fn print_moves(&self) {
-        println!(
-            "{}",
-            self.moves
-                .iter()
-                .map(|item| { item.to_string() })
-                .collect::<Vec<String>>()
-                .join(" ")
-        );
+    pub fn moves_as_string(&self) -> String {
+        self.moves
+            .iter()
+            .map(|item| item.to_string())
+            .collect::<Vec<String>>()
+            .join(" ")
     }
 
-    pub fn scramble(&mut self, scramble: &str) {
-        let moves: Vec<&str> = scramble.split(' ').collect();
+    pub fn scramble(&mut self, scramble: &str) -> bool {
+        let scramble = scramble.split(' ').collect::<Vec<&str>>();
 
-        for r#move in moves {
-            match r#move {
-                "U" => self.up(),
-                "U'" => self.up_prime(),
-                "U2" => self.up_2(),
+        let mut scramble_moves = Vec::new();
+        for scramble_move in scramble {
+            scramble_moves.push(Moves::from_notation(scramble_move));
+        }
 
-                "D" => self.down(),
-                "D'" => self.down_prime(),
-                "D2" => self.down_2(),
+        let are_all_moves_valid = !scramble_moves.contains(&None);
 
-                "R" => self.right(),
-                "R'" => self.right_prime(),
-                "R2" => self.right_2(),
-
-                "L" => self.left(),
-                "L'" => self.left_prime(),
-                "L2" => self.left_2(),
-
-                "F" => self.front(),
-                "F'" => self.front_prime(),
-                "F2" => self.front_2(),
-
-                "B" => self.back(),
-                "B'" => self.back_prime(),
-                "B2" => self.back_2(),
-
-                _ => {
-                    panic!("Invalid move");
-                }
+        if are_all_moves_valid {
+            let mut pending_moves = Vec::new();
+            for pending_move in scramble_moves {
+                pending_moves.push(pending_move.unwrap());
             }
+
+            for r#move in pending_moves {
+                self.make_move(r#move);
+            }
+            true
+        } else {
+            false
+        }
+    }
+
+    pub fn make_move(&mut self, to_move: Moves) {
+        self.moves.push(to_move);
+
+        match to_move {
+            Moves::Up => self.up(),
+            Moves::UpPrime => self.up_prime(),
+            Moves::Up2 => self.up_2(),
+            Moves::Down => self.down(),
+            Moves::DownPrime => self.down_prime(),
+            Moves::Down2 => self.down_2(),
+            Moves::Right => self.right(),
+            Moves::RightPrime => self.right_prime(),
+            Moves::Right2 => self.right_2(),
+            Moves::Left => self.left(),
+            Moves::LeftPrime => self.left_prime(),
+            Moves::Left2 => self.left_2(),
+            Moves::Front => self.front(),
+            Moves::FrontPrime => self.front_prime(),
+            Moves::Front2 => self.front_2(),
+            Moves::Back => self.back(),
+            Moves::BackPrime => self.back_prime(),
+            Moves::Back2 => self.back_2(),
+        }
+    }
+
+    pub fn undo_move(&mut self) {
+        if let Some(last_move) = self.moves.pop() {
+            self.make_move(last_move.opposite());
         }
     }
 
@@ -146,8 +164,7 @@ impl Cube {
         self.pieces[face][2][2] = previous[face][0][2];
     }
 
-    pub fn up(&mut self) {
-        self.moves.push(Moves::Up);
+    fn up(&mut self) {
         let previous = self.pieces;
 
         self.rotate_face_clockwise(0);
@@ -172,8 +189,7 @@ impl Cube {
         self.pieces[4][0][1] = previous[1][0][1];
         self.pieces[4][0][2] = previous[1][0][2];
     }
-    pub fn down(&mut self) {
-        self.moves.push(Moves::Down);
+    fn down(&mut self) {
         let previous = self.pieces;
 
         // Down face
@@ -199,8 +215,7 @@ impl Cube {
         self.pieces[4][2][1] = previous[3][2][1];
         self.pieces[4][2][2] = previous[3][2][2];
     }
-    pub fn right(&mut self) {
-        self.moves.push(Moves::Right);
+    fn right(&mut self) {
         let previous = self.pieces;
 
         // Right face
@@ -226,8 +241,7 @@ impl Cube {
         self.pieces[5][1][2] = previous[4][1][0];
         self.pieces[5][2][2] = previous[4][0][0];
     }
-    pub fn left(&mut self) {
-        self.moves.push(Moves::Left);
+    fn left(&mut self) {
         let previous = self.pieces;
 
         // Right face
@@ -253,8 +267,7 @@ impl Cube {
         self.pieces[5][1][0] = previous[2][1][0];
         self.pieces[5][2][0] = previous[2][2][0];
     }
-    pub fn front(&mut self) {
-        self.moves.push(Moves::Front);
+    fn front(&mut self) {
         let previous = self.pieces;
 
         // Front face
@@ -280,8 +293,7 @@ impl Cube {
         self.pieces[5][0][1] = previous[3][1][0];
         self.pieces[5][0][2] = previous[3][0][0];
     }
-    pub fn back(&mut self) {
-        self.moves.push(Moves::Back);
+    fn back(&mut self) {
         let previous = self.pieces;
 
         // Back face
@@ -308,58 +320,58 @@ impl Cube {
         self.pieces[5][2][2] = previous[1][2][0];
     }
 
-    pub fn up_prime(&mut self) {
+    fn up_prime(&mut self) {
         self.up();
         self.up();
         self.up();
     }
-    pub fn down_prime(&mut self) {
+    fn down_prime(&mut self) {
         self.down();
         self.down();
         self.down();
     }
-    pub fn right_prime(&mut self) {
+    fn right_prime(&mut self) {
         self.right();
         self.right();
         self.right();
     }
-    pub fn left_prime(&mut self) {
+    fn left_prime(&mut self) {
         self.left();
         self.left();
         self.left();
     }
-    pub fn front_prime(&mut self) {
+    fn front_prime(&mut self) {
         self.front();
         self.front();
         self.front();
     }
-    pub fn back_prime(&mut self) {
+    fn back_prime(&mut self) {
         self.back();
         self.back();
         self.back();
     }
 
-    pub fn up_2(&mut self) {
+    fn up_2(&mut self) {
         self.up();
         self.up();
     }
-    pub fn down_2(&mut self) {
+    fn down_2(&mut self) {
         self.down();
         self.down();
     }
-    pub fn right_2(&mut self) {
+    fn right_2(&mut self) {
         self.right();
         self.right();
     }
-    pub fn left_2(&mut self) {
+    fn left_2(&mut self) {
         self.left();
         self.left();
     }
-    pub fn front_2(&mut self) {
+    fn front_2(&mut self) {
         self.front();
         self.front();
     }
-    pub fn back_2(&mut self) {
+    fn back_2(&mut self) {
         self.back();
         self.back();
     }

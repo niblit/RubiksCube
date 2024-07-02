@@ -1,6 +1,6 @@
 use std::fmt;
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
 pub enum Moves {
     Up,
     UpPrime,
@@ -20,6 +20,61 @@ pub enum Moves {
     Back,
     BackPrime,
     Back2,
+}
+
+impl Moves {
+    pub fn from_notation(notation: &str) -> Option<Self> {
+        match notation {
+            "U" => Some(Moves::Up),
+            "U'" => Some(Moves::UpPrime),
+            "U2" => Some(Moves::Up),
+
+            "D" => Some(Moves::Down),
+            "D'" => Some(Moves::DownPrime),
+            "D2" => Some(Moves::Down2),
+
+            "R" => Some(Moves::Right),
+            "R'" => Some(Moves::RightPrime),
+            "R2" => Some(Moves::Right2),
+
+            "L" => Some(Moves::Left),
+            "L'" => Some(Moves::LeftPrime),
+            "L2" => Some(Moves::Left2),
+
+            "F" => Some(Moves::Front),
+            "F'" => Some(Moves::FrontPrime),
+            "F2" => Some(Moves::Front2),
+
+            "B" => Some(Moves::Back),
+            "B'" => Some(Moves::BackPrime),
+            "B2" => Some(Moves::Back2),
+
+            _ => None,
+        }
+    }
+
+    pub fn opposite(&self) -> Moves {
+        match self {
+            Moves::Up => Moves::UpPrime,
+            Moves::UpPrime => Moves::Up,
+            Moves::Up2 => Moves::Up2,
+            Moves::Down => Moves::DownPrime,
+            Moves::DownPrime => Moves::Down,
+            Moves::Down2 => Moves::Down2,
+            Moves::Right => Moves::RightPrime,
+            Moves::RightPrime => Moves::Right,
+            Moves::Right2 => Moves::Right2,
+            Moves::Left => Moves::LeftPrime,
+            Moves::LeftPrime => Moves::Left,
+            Moves::Left2 => Moves::Left2,
+            Moves::Front => Moves::FrontPrime,
+            Moves::FrontPrime => Moves::Front,
+            Moves::Front2 => Moves::Front2,
+            Moves::Back => Moves::BackPrime,
+            Moves::BackPrime => Moves::Back,
+            Moves::Back2 => Moves::Back2,
+        }
+    }
 }
 
 impl fmt::Display for Moves {

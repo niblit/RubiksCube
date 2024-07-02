@@ -1,8 +1,8 @@
 use std::collections::HashSet;
 use std::collections::VecDeque;
 
-use crate::facets::Facet;
 use crate::cube::Cube;
+use crate::facets::Facet;
 
 pub fn solve(cube: &Cube) -> Cube {
     let mut queue = VecDeque::new();

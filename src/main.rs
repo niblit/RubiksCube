@@ -6,12 +6,25 @@ fn main() {
     let mut cube = Cube::default();
     println!("Initial position:\n{cube}");
 
-    cube.scramble(SCRAMBLE);
-    println!("Scramble: {SCRAMBLE}\n{cube}");
+    println!("Enter a valid scramble:");
+    let mut user_scramble = String::new();
+    std::io::stdin().read_line(&mut user_scramble).unwrap();
+    user_scramble = user_scramble.replace('\n', "");
+
+    println!();
+    if !cube.scramble(&user_scramble) {
+        println!("Provided scramble was invalid, using the default one");
+        cube.scramble(SCRAMBLE);
+    }
+
+    println!("Scramble: {}\n{}", cube.moves_as_string(), cube);
     cube.clear_past_moves();
 
     println!("Searching white cross...");
     let solved_cube = solve(&cube);
-    solved_cube.print_moves();
-    println!("{solved_cube}");
+    println!(
+        "Found solution:{}\n{}",
+        solved_cube.moves_as_string(),
+        solved_cube
+    );
 }
