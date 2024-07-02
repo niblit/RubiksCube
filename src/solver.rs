@@ -1,4 +1,3 @@
-use std::cmp::max;
 use std::collections::HashSet;
 use std::collections::VecDeque;
 
@@ -27,6 +26,7 @@ fn search(start: &Cube, state_evaluation_fn: impl Fn(&Cube) -> u8) -> Vec<Moves>
         score: state_evaluation_fn(&cube),
     }]);
 
+    let mut last_iteration_min_score = 0;
     loop {
         let current_node = queue.pop_front().unwrap();
 
@@ -55,18 +55,19 @@ fn search(start: &Cube, state_evaluation_fn: impl Fn(&Cube) -> u8) -> Vec<Moves>
                 cube.undo_move();
             }
 
-            let mut max_score = 0;
+            let mut min_score = u8::MAX;
             for node in &nodes {
-                if node.score > max_score {
-                    max_score = node.score
+                if node.score < min_score {
+                    min_score = node.score
                 }
             }
 
             for node in nodes {
-                if node.score >= max_score {
+                if node.score >= last_iteration_min_score {
                     queue.push_back(node)
                 }
             }
+            last_iteration_min_score = min_score;
         }
 
         for _ in 0..current_node.moves.len() {
