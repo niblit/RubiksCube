@@ -1,5 +1,5 @@
 # RubiksCube
 
-3x3 Rubik's cube representation made in rust
+3x3 Rubik's cube representation, I plan on adding a solver later
 
-![alt text](media/run.png)
+![Terminal output from running the program](media/run.png)
